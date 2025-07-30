@@ -13,20 +13,22 @@ const NotificationPage = () => {
 	const { data: notifications, isLoading } = useQuery({
 		queryKey: ["notifications"],
 		queryFn: async () => {
-			const res = await fetch("/api/notifications");
-			const data = await res.json();
-			if (!res.ok) throw new Error(data.error || "Something went wrong");
-			return data;
-		},
+	const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`);
+	const data = await res.json();
+	if (!res.ok) throw new Error(data.error || "Something went wrong");
+	return data;
+},
+
 	});
 
 	const { mutate: deleteNotifications } = useMutation({
-		mutationFn: async () => {
-			const res = await fetch("/api/notifications", { method: "DELETE" });
-			const data = await res.json();
-			if (!res.ok) throw new Error(data.error || "Something went wrong");
-			return data;
-		},
+	mutationFn: async () => {
+	const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, { method: "DELETE" });
+	const data = await res.json();
+	if (!res.ok) throw new Error(data.error || "Something went wrong");
+	return data;
+},
+
 		onSuccess: () => {
 			toast.success("All notifications cleared");
 			queryClient.invalidateQueries({ queryKey: ["notifications"] });
