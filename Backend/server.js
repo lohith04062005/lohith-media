@@ -22,13 +22,24 @@ cloudinary.config({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ CORS MIDDLEWARE (Allow frontend to access backend + cookies)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://lohith-media-nr27.vercel.app", // ✅ Vercel frontend URL
+];
+
 app.use(
-	cors({
-		origin: "http://localhost:3000", // frontend URL
-		credentials: true, // allow cookies
-	})
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
+
 
 // ✅ BODY PARSER — Increase Payload Limit
 app.use(express.json({ limit: "10mb" }));
