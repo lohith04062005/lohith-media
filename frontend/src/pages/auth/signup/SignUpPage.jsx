@@ -23,6 +23,8 @@ const SignUpPage = () => {
 			const res = await fetch(
 				`${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
 				{
+					credentials: "include", // ⬅️ Important for cookies!
+
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
